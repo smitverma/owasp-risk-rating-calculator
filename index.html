@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<h1>OWASP Risk Assessment Calculator</h1>
+
+<div style="display: flex; flex-direction: column;">
+
+
+    <div style="box-shadow: -10px 10px; display: grid; grid-auto-flow: column;align-items: center; border-radius:12px; padding: 16px; justify-content: space-around; background-color: #777777; margin-left: 20%; margin-right: 20%; margin-bottom: 40px;">
+
+        <h1>Risk</h1>
+
+        <div class="risk-progress_container">
+            <div class="risk-progress-wrapper">
+                <svg class="risk-progress-circle-background" width="240" height="240">
+                    <circle cx="120" cy="120" r="104"></circle>
+                </svg>
+                <svg class="risk-progress-circle" id="riskProgCircle" style="stroke: #4caf50;" width="240" height="240">
+                    <circle cx="120" cy="120" r="104"></circle> x
+                </svg>
+                <text class="risk-progress-text" x="100%" y="50%" id="riskProgText" font-weight="bold">1</text>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div style="display: grid; justify-content: end; padding-right: 20px; background-color: white; width: 50%; float:left;">
+
+            <div class="progress_container">
+                <div class="progress-wrapper">
+                    <svg class="progress-circle-background" width="150" height="150">
+                        <circle cx="75" cy="75" r="65"></circle>
+                    </svg>
+                    <svg class="progress-circle" id="leftProgCircle" style="stroke: #4caf50;" width="150" height="150">
+                        <circle cx="75" cy="75" r="65"></circle>
+                    </svg>
+                    <text class="progress-text" x="100%" y="50%" id="leftProgText" font-weight="bold">1</text>
+                </div>
+            </div>
+
+            <h3>Estimating Likelihood</h3>
+            <h5 style="margin-top: 10px">Threat Agent Factors</h5>
+
+
+            <div class="selector_container">
+                <label class="option_row">
+                    <div class="option_text">Skill Level</div>
+                    <select class="option_select" onchange="updateRes()" id="left1">
+                        <option value="1">No technical skills (1)</option>
+                        <option value="3">Some technical skills (3)</option>
+                        <option value="5">Advanced computer user (5)</option>
+                        <option value="6">Network and programming skills (6)</option>
+                        <option value="9">Security penetration skills (9)</option>
+                    </select>
+                </label>
+                <label class="option_row">
+                    <div class="option_text">Motive</div>
+                    <select class="option_select" onchange="updateRes()" id="left2">
+                        <option value="1">Low or no reward (1)</option>
+                        <option value="4">Possible reward (4)</option>
+                        <option value="9">High reward (9)</option>
+                    </select>
+                </label>
+                <label class="option_row">
+                    <div class="option_text">Opportunity</div>
+                    <select class="option_select" onchange="updateRes()" id="left3">
+                        <option value="0">Full access or expensive resources required (0)</option>
+                        <option value="4">Special access or resources required (4)</option>
+                        <option value="7">Some access or resources required (7)</option>
+                        <option value="9">No access or resources required (9)</option>
+                    </select></label>
+                <label class="option_row">
+                    <div class="option_text">Size</div>
+                    <select class="option_select" onchange="updateRes()" id="left4">
+                        <option value="2">Developers, system administrators (2)</option>
+                        <option value="4">Intranet users (4)</option>
+                        <option value="5">Partners (5)</option>
+                        <option value="6">Authenticated users (6)</option>
+                        <option value="9">Anonymous internet users (9)</option>
+                    </select>
+                </label>
+            </div>
+
+            <h5 style="margin-top: 20px">Vulnerability Factors</h5>
+
+            <div class="selector_container">
+
+                <label class="option_row">
+                    <div class="option_text">Ease of Discovery</div>
+                    <select class="option_select" onchange="updateRes()" id="left5">
+                        <option value="1">Practically impossible (1)</option>
+                        <option value="3">Difficult (3)</option>
+                        <option value="7">Easy (7)</option>
+                        <option value="9">Automated tools available (9)</option>
+                    </select>
+                </label>
+                <label class="option_row">
+                    <div class="option_text">Ease of Exploit</div>
+                    <select class="option_select" onchange="updateRes()" id="left6">
+                        <option value="1">Theoretical (1)</option>
+                        <option value="3">Difficult (3)</option>
+                        <option value="5">Easy (5)</option>
+                        <option value="9">Automated tools available (9)</option>
+                    </select>
+                </label>
+                <label class="option_row">
+                    <div class="option_text">Awareness</div>
+                    <select class="option_select" onchange="updateRes()" id="left7">
+                        <option value="1">Unknown (1)</option>
+                        <option value="4">Hidden (4)</option>
+                        <option value="6">Obvious (6)</option>
+                        <option value="9">Public knowledge (9)</option>
+                    </select></label>
+                <label class="option_row">
+                    <div class="option_text">Intrusion Detection</div>
+                    <select class="option_select" onchange="updateRes()" id="left8">
+                        <option value="1">Active detection in application (1)</option>
+                        <option value="3">Logged and reviewed (3)</option>
+                        <option value="8">Logged without review (8)</option>
+                        <option value="9">Not logged (9)</option>
+                    </select>
+                </label>
+            </div>
+
+            <button onclick="resetLeft()" style="margin-top: 16px; margin-bottom: 20px; padding: 6px">Reset</button>
+
+        </div>
+        <div style="display: grid; justify-content: start; padding-left: 20px; background-color: white; width: 50%; float:right;">
+
+          <div class="progress_container">
+                <div class="progress-wrapper">
+                    <svg class="progress-circle-background" width="150" height="150">
+                        <circle cx="75" cy="75" r="65"></circle>
+                    </svg>
+                    <svg class="progress-circle" id="rightProgCircle" style="stroke: #4caf50;" width="150" height="150">
+                        <circle cx="75" cy="75" r="65"></circle>
+                    </svg>
+                    <text class="progress-text" x="100%" y="50%" id="rightProgText" font-weight="bold">1</text>
+                </div>
+            </div>
+
+            <h3>Estimating Impact</h3>
+            <h5 style="margin-top: 10px">Technical Impact Factors</h5>
+
+            <div class="selector_container">
+
+
+                <label class="option_row">
+                    <div class="option_text">Loss of Confidentiality</div>
+                    <select class="option_select" onchange="updateRes()" id="right1">
+                        <option value="2">Minimal non-sensitive data disclosed (2)</option>
+                        <option value="6">minimal critical data disclosed (6)</option>
+                        <option value="6">extensive non-sensitive data disclosed (6)</option>
+                        <option value="7">extensive critical data disclosed (7)</option>
+                        <option value="9">all data disclosed (9)</option>
+                    </select>
+                </label>
+                <label class="option_row">
+                    <div class="option_text">Loss of Integrity</div>
+                    <select class="option_select" onchange="updateRes()" id="right2">
+                        <option value="1">Minimal slightly corrupt data (1)</option>
+                        <option value="3">Minimal seriously corrupt data (3)</option>
+                        <option value="5">Extensive slightly corrupt data (5)</option>
+                        <option value="7">Extensive seriously corrupt data (7)</option>
+                        <option value="9">All data totally corrupt (9)</option>
+                    </select>
+                    </select>
+                </label>
+                <label class="option_row">
+                    <div class="option_text">Loss of Availability</div>
+                    <select class="option_select" onchange="updateRes()" id="right3">
+                        <option value="1">Minimal secondary services interrupted (1)</option>
+                        <option value="5">Minimal primary services interrupted (5)</option>
+                        <option value="5">Extensive secondary services interrupted (5)</option>
+                        <option value="7">Extensive primary services interrupted (7)</option>
+                        <option value="9">All services completely lost (9)</option>
+                    </select>
+                    </select></label>
+                <label class="option_row">
+                    <div class="option_text">Loss of Accountability</div>
+                    <select class="option_select" onchange="updateRes()" id="right4">
+                        <option value="1">Fully traceable (1)</option>
+                        <option value="7">Possibly traceable (7)</option>
+                        <option value="9">Completely anonymous (9)</option>
+                    </select>
+                </label>
+            </div>
+
+            <h5 style="margin-top: 20px">Business Impact Factors</h5>
+
+            <div class="selector_container">
+                <label class="option_row">
+                    <div class="option_text">Financial Damage</div>
+                    <select class="option_select" onchange="updateRes()" id="right5">
+                        <option value="1">Less than the cost to fix the vulnerability (1)</option>
+                        <option value="3">Minor effect on annual profit (3)</option>
+                        <option value="7">Significant effect on annual profit (7)</option>
+                        <option value="9">Bankruptcy (9)</option>
+                    </select>
+                </label>
+                <label class="option_row">
+                    <div class="option_text">Reputation Damage</div>
+                    <select class="option_select" onchange="updateRes()" id="right6">
+                        <option value="1">Minimal damage (1)</option>
+                        <option value="4">Loss of major accounts (4)</option>
+                        <option value="5">Loss of goodwill (5)</option>
+                        <option value="9">Brand damage (9)</option>
+                    </select>
+                    </select>
+                </label>
+                <label class="option_row">
+                    <div class="option_text">Non-compliance</div>
+                    <select class="option_select" onchange="updateRes()" id="right7">
+                        <option value="2">Minor violation (2)</option>
+                        <option value="5">Clear violation (5)</option>
+                        <option value="7">High profile violation (7)</option>
+                    </select></label>
+                <label class="option_row">
+                    <div class="option_text">Privacy Violation</div>
+                    <select class="option_select" onchange="updateRes()" id="right8">
+                        <option value="3">One individual (3)</option>
+                        <option value="5">Hundreds of people (5)</option>
+                        <option value="7">Thousands of people (7)</option>
+                        <option value="9">Millions of people (9)</option>
+                    </select>
+                </label>
+            </div>
+
+            <button onclick="resetRight()" style="margin-top: 16px; margin-bottom: 20px; padding: 6px">Reset</button>
+
+        </div>
+
+    </div>
+</div>
+<script src="js/script.js"></script>
+</body>
+</html>
